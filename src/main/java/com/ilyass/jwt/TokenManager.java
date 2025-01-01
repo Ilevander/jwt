@@ -3,8 +3,11 @@ package com.ilyass.jwt;
 import java.util.Date;
 import java.util.Map;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,4 +57,12 @@ public class TokenManager {
 		}
 		return false;
 	}
+	
+	public static void getDataFromJwtToken(String token) {
+		JwtParser parser = Jwts.parser();
+		parser.setSigningKey(KEY);
+		Jws<Claims> jws = parser.parseClaimsJws(token);
+		Claims claims = jws.getBody();
+		claims.keySet().forEach(claim -> System.out.println(claim + " " + claims.get(claim)));
+		}
 }
