@@ -1,6 +1,7 @@
 package com.ilyass.jwt;
 
 import java.util.Date;
+import java.util.Map;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,17 @@ public class TokenManager {
 		String token = null;
 		JwtBuilder builder = Jwts.builder();
 		builder.setSubject(username);
+		builder.setIssuedAt(dateCreation);
+		builder.setExpiration(dateExpiration);
+		builder.signWith(SignatureAlgorithm.HS512, KEY);
+		token = builder.compact();
+		return token;
+	}
+	
+	public static String generateTokenwithRoles(Map<String, Object> credentials, Date dateCreation,Date dateExpiration) {
+		String token = null;
+		JwtBuilder builder = Jwts.builder();
+		builder.setClaims(credentials);
 		builder.setIssuedAt(dateCreation);
 		builder.setExpiration(dateExpiration);
 		builder.signWith(SignatureAlgorithm.HS512, KEY);
